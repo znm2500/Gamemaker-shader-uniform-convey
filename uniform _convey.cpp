@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include<vector>
@@ -26,7 +26,7 @@ int main()
     cout << "\n\n\n创建事件："<<endl;
     for (int i = 0; i < codes.size(); i++) {
         if (codes[i].find("uniform float") != string::npos) { int c = 14;
-        
+
         while (codes[i].at(c) != ';') {
             cout << codes[i].at(c++);
         }
@@ -39,7 +39,7 @@ int main()
         s += string(codes[i].begin() + 14, codes[i].begin() + c);
         s += ");";
         draws.push_back(s);
-        
+
         }
         else if (codes[i].find("uniform int") != string::npos) {
             int c = 12;
@@ -55,7 +55,7 @@ int main()
             s += string(codes[i].begin() + 12, codes[i].begin() + c);
             s += ");";
             draws.push_back(s);
-          
+
         }
         else if (codes[i].find("uniform vec2") != string::npos) {
             int c = 13;
@@ -71,7 +71,7 @@ int main()
             s += string(codes[i].begin() + 13, codes[i].begin() + c);
             s += ");";
             draws.push_back(s);
-           
+
         }
         else if (codes[i].find("uniform vec3") != string::npos) {
             int c = 13;
@@ -87,7 +87,7 @@ int main()
             s += string(codes[i].begin() + 13, codes[i].begin() + c);
             s += ");";
             draws.push_back(s);
-            
+
         }
         else if (codes[i].find("uniform vec4") != string::npos) {
             int c = 13;
@@ -103,7 +103,7 @@ int main()
             s += string(codes[i].begin() + 13, codes[i].begin() + c);
             s += ");";
             draws.push_back(s);
-          
+
         }
         else if (codes[i].find("uniform ivec2") != string::npos) {
             int c = 14;
@@ -119,7 +119,7 @@ int main()
             s += string(codes[i].begin() + 14, codes[i].begin() + c);
             s += ");";
             draws.push_back(s);
-            
+
         }
         else if (codes[i].find("uniform ivec3") != string::npos) {
             int c = 14;
@@ -135,7 +135,7 @@ int main()
             s += string(codes[i].begin() + 14, codes[i].begin() + c);
             s += ");";
             draws.push_back(s);
-          
+
         }
         else if (codes[i].find("uniform ivec4") != string::npos) {
             int c = 14;
@@ -151,7 +151,7 @@ int main()
             s += string(codes[i].begin() + 14, codes[i].begin() + c);
             s += ");";
             draws.push_back(s);
-          
+
         }
         else if (codes[i].find("uniform mat2") != string::npos) {
             int c = 13;
@@ -204,9 +204,9 @@ int main()
         else if (codes[i].find("uniform sample2D") != string::npos) {
             int c = 17;
             while (codes[i].at(c) != ';') {
-                cout << codes[i].at(c++);
+                c++;
             }
-            cout << " = noone;" << endl;
+            
             string s = "texture_set_stage(shader_get_sampler_index(";
             s += shader;
             s += ",\"";
@@ -220,8 +220,6 @@ int main()
 
             }
 
-
-            
 
     }
     cout << "\n\n\n绘制事件:" << endl;
