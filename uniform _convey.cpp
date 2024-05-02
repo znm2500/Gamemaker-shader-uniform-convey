@@ -15,30 +15,32 @@ int main()
     getline(cin, shader);
     cout << "精灵名字:" << endl;
     getline(cin, sprite);
-    cout << "请输入代码："<<endl;
+    cout << "请输入代码：" << endl;
 
-   while (getline(cin, code))
+    while (getline(cin, code))
     {
         if (code.empty())
             break;
         codes.push_back(code);
     }
-    cout << "\n\n\n创建事件："<<endl;
+    cout << "\n\n\n创建事件：" << endl;
+    cout << "surf=surface_create(room_width,room_height);"<<endl;
     for (int i = 0; i < codes.size(); i++) {
-        if (codes[i].find("uniform float") != string::npos) { int c = 14;
+        if (codes[i].find("uniform float") != string::npos) {
+            int c = 14;
 
-        while (codes[i].at(c) != ';') {
-            cout << codes[i].at(c++);
-        }
-        cout << " = 0;" << endl;
-        string s = "shader_set_uniform_f(shader_get_uniform(";
-        s += shader;
-        s += ",\"";
-        s += string(codes[i].begin() + 14, codes[i].begin() + c);
-        s += "\"),";
-        s += string(codes[i].begin() + 14, codes[i].begin() + c);
-        s += ");";
-        draws.push_back(s);
+            while (codes[i].at(c) != ';') {
+                cout << codes[i].at(c++);
+            }
+            cout << " = 0;" << endl;
+            string s = "shader_set_uniform_f(shader_get_uniform(";
+            s += shader;
+            s += ",\"";
+            s += string(codes[i].begin() + 14, codes[i].begin() + c);
+            s += "\"),";
+            s += string(codes[i].begin() + 14, codes[i].begin() + c);
+            s += ");";
+            draws.push_back(s);
 
         }
         else if (codes[i].find("uniform int") != string::npos) {
@@ -168,67 +170,69 @@ int main()
             s += ");";
             draws.push_back(s);
 
-            }
+        }
         else if (codes[i].find("uniform mat3") != string::npos) {
-                int c = 13;
-                while (codes[i].at(c) != ';') {
-                    cout << codes[i].at(c++);
-                }
-                cout << " = [[0,0,0],[0,0,0],[0,0,0]];" << endl;
-                string s = "shader_set_uniform_matrix_array(shader_get_uniform(";
-                s += shader;
-                s += ",\"";
-                s += string(codes[i].begin() + 13, codes[i].begin() + c);
-                s += "\"),";
-                s += string(codes[i].begin() + 13, codes[i].begin() + c);
-                s += ");";
-                draws.push_back(s);
-
-                }
-        else if (codes[i].find("uniform mat4") != string::npos) {
-                    int c = 13;
-                    while (codes[i].at(c) != ';') {
-                        cout << codes[i].at(c++);
-                    }
-                    cout << " = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];" << endl;
-                    string s = "shader_set_uniform_matrix_array(shader_get_uniform(";
-                    s += shader;
-                    s += ",\"";
-                    s += string(codes[i].begin() + 13, codes[i].begin() + c);
-                    s += "\"),";
-                    s += string(codes[i].begin() + 13, codes[i].begin() + c);
-                    s += ");";
-                    draws.push_back(s);
-
-                    }
-        else if (codes[i].find("uniform sample2D") != string::npos) {
-            int c = 17;
+            int c = 13;
             while (codes[i].at(c) != ';') {
-                c++;
+                cout << codes[i].at(c++);
             }
-            
-            string s = "texture_set_stage(shader_get_sampler_index(";
+            cout << " = [[0,0,0],[0,0,0],[0,0,0]];" << endl;
+            string s = "shader_set_uniform_matrix_array(shader_get_uniform(";
             s += shader;
             s += ",\"";
-            s += string(codes[i].begin() + 17, codes[i].begin() + c);
+            s += string(codes[i].begin() + 13, codes[i].begin() + c);
             s += "\"),";
-            s += "sprite_get_texture(";
-            s += sprite;
-            s += ")";
+            s += string(codes[i].begin() + 13, codes[i].begin() + c);
             s += ");";
             draws.push_back(s);
 
+        }
+        else if (codes[i].find("uniform mat4") != string::npos) {
+            int c = 13;
+            while (codes[i].at(c) != ';') {
+                cout << codes[i].at(c++);
             }
+            cout << " = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];" << endl;
+            string s = "shader_set_uniform_matrix_array(shader_get_uniform(";
+            s += shader;
+            s += ",\"";
+            s += string(codes[i].begin() + 13, codes[i].begin() + c);
+            s += "\"),";
+            s += string(codes[i].begin() + 13, codes[i].begin() + c);
+            s += ");";
+            draws.push_back(s);
+
+        }
+        else if (codes[i].find("uniform sampler2D") != string::npos) {
+            int c = 18;
+            while (codes[i].at(c) != ';') {
+                c++;
+            }
+
+            string s = "texture_set_stage(shader_get_sampler_index(";
+            s += shader;
+            s += ",\"";
+            s += string(codes[i].begin() + 18, codes[i].begin() + c);
+            s += "\"),";
+            s += "sprite_get_texture(";
+            s += sprite;
+            s += ",0)";
+            s += ");";
+            draws.push_back(s);
+
+        }
 
 
     }
     cout << "\n\n\n绘制事件:" << endl;
+    cout << "if(!surface_exists(surf))surf=surface_create(room_width,room_height);"<<endl;
+    cout << "surface_copy(surf,0,0,application_surface);" << endl;
     cout << "shader_set(" << shader << ");" << endl;
     for (int i = 0; i < draws.size(); i++) {
         cout << draws[i] << endl;
 
     }
+    cout << "draw_surface(surf,0,0);"<<endl;
     cout << "shader_reset()" << endl;
-
     return 0;
 }
